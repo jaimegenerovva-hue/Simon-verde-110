@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería Lightbox Profesional - Luxe Estate</title>
+    <style>
+        /* 
+           ESTILOS CSS - DISEÑO PREMIUM Y MINIMALISTA
+        */
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #1a1a1a;
+            --overlay-color: rgba(0, 0, 0, 0.9);
+            --transition-speed: 0.4s;
+            --accent-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Contenedor de la Galería */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            cursor: pointer;
+            background-color: #ddd;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-cover: cover;
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Estilos del Modal Lightbox */
+        .lightbox-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--overlay-color);
+            display: none; /* Oculto por defecto */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 85%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            user-select: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-image.show {
+            opacity: 1;
+        }
+
+        /* Botones de Navegación */
+        .lightbox-btn {
+            position: absolute;
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 40px;
+            cursor: pointer;
+            padding: 20px;
+            z-index: 1010;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .lightbox-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .close-btn {
+            top: 20px;
+            right: 20px;
+            font-size: 35px;
+            line-height: 1;
+        }
+
+        .prev-btn {
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .next-btn {
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Indicador de carga */
+        .loader {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .lightbox-btn {
+                font-size: 30px;
+                padding: 10px;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Galería de Propiedades</h1>
+
+    <div class="gallery-grid" id="gallery">
+        <!-- 
+            INSERTAR AQUÍ LAS RUTAS DE LAS IMÁGENES 
+            Cada 'data-full' debe contener la URL de la imagen en alta resolución.
+        -->
+        <div class="gallery-item">
+            <img src="https://fotos15.apinmo.com/3503/28245230/41-1.jpg" data-full="https://fotos15.apinmo.com/3503/28245230/41-1.jpg" alt="Fachada Principal">
+        </div>
+        <div class="gallery-item">
+            <img src="https://fotos15.apinmo.com/3503/28245230/41-11s.jpg" data-full="https://fotos15.apinmo.com/3503/28245230/41-11s.jpg" alt="Salón Principal">
+        </div>
+        <div class="gallery-item">
+            <img src="https://fotos15.apinmo.com/3503/28245230/41-5s.jpg" data-full="https://fotos15.apinmo.com/3503/28245230/41-5s.jpg" alt="Cocina Moderna">
+        </div>
+        <div class="gallery-item">
+            <img src="https://fotos15.apinmo.com/3503/28245230/41-31s.jpg" data-full="https://fotos15.apinmo.com/3503/28245230/41-31s.jpg" alt="Dormitorio Suite">
+        </div>
+        <div class="gallery-item">
+            <img src="https://fotos15.apinmo.com/3503/28245230/41-43s.jpg" data-full="https://fotos15.apinmo.com/3503/28245230/41-43s.jpg" alt="Baño de Lujo">
+        </div>
+        <div class="gallery-item">
+            <img src="https://fotos15.apinmo.com/3503/28245230/41-52s.jpg" data-full="https://fotos15.apinmo.com/3503/28245230/41-52s.jpg" alt="Plano de Planta">
+        </div>
+        <!-- Imágenes movidas a Todas las fotos -->
+        <div class="gallery-item">
+            <img src="https://fotos15.apinmo.com/3503/28245230/41-55s.jpg" data-full="https://fotos15.apinmo.com/3503/28245230/41-55s.jpg" alt="Vista General 1">
+        </div>
+        <div class="gallery-item">
+            <img src="https://fotos15.apinmo.com/3503/28245230/41-8s.jpg" data-full="https://fotos15.apinmo.com/3503/28245230/41-8s.jpg" alt="Vista General 2">
+        </div>
+        <div class="gallery-item">
+            <img src="https://fotos15.apinmo.com/3503/28245230/41-15s.jpg" data-full="https://fotos15.apinmo.com/3503/28245230/41-15s.jpg" alt="Vista General 3">
+        </div>
+    </div>
+
+    <!-- Estructura del Modal -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <button class="lightbox-btn close-btn" id="closeBtn">&times;</button>
+        <button class="lightbox-btn prev-btn" id="prevBtn">&#10094;</button>
+        <button class="lightbox-btn next-btn" id="nextBtn">&#10095;</button>
+        
+        <div class="lightbox-content">
+            <div class="loader" id="loader"></div>
+            <img src="" alt="" class="lightbox-image" id="lightboxImg">
+        </div>
+    </div>
+
+    <script>
+        /* 
+           JAVASCRIPT VANILLA - LÓGICA DE FUNCIONAMIENTO
+        */
+        const gallery = document.getElementById('gallery');
+        const modal = document.getElementById('lightboxModal');
+        const modalImg = document.getElementById('lightboxImg');
+        const closeBtn = document.getElementById('closeBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const loader = document.getElementById('loader');
+
+        let currentIndex = 0;
+        const items = Array.from(document.querySelectorAll('.gallery-item img'));
+        const images = items.map(img => img.getAttribute('data-full'));
+
+        // Abrir Lightbox
+        items.forEach((item, index) => {
+            item.parentElement.addEventListener('click', () => {
+                currentIndex = index;
+                openLightbox(images[currentIndex]);
+            });
+        });
+
+        function openLightbox(src) {
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+            document.body.style.overflow = 'hidden'; // Bloquear scroll
+            loadImage(src);
+        }
+
+        function loadImage(src) {
+            modalImg.classList.remove('show');
+            loader.style.display = 'block';
+            
+            const tempImg = new Image();
+            tempImg.src = src;
+            tempImg.onload = () => {
+                modalImg.src = src;
+                modalImg.classList.add('show');
+                loader.style.display = 'none';
+            };
+        }
+
+        // Navegación
+        function showNext() {
+            currentIndex = (currentIndex + 1) % images.length;
+            loadImage(images[currentIndex]);
+        }
+
+        function showPrev() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            loadImage(images[currentIndex]);
+        }
+
+        // Cerrar Lightbox
+        function closeLightbox() {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modalImg.src = '';
+            }, 400);
+            document.body.style.overflow = 'auto';
+        }
+
+        // Event Listeners
+        closeBtn.addEventListener('click', closeLightbox);
+        nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+        prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+
+        // Cerrar al hacer clic fuera de la imagen
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.classList.contains('lightbox-content')) {
+                closeLightbox();
+            }
+        });
+
+        // Soporte para Teclado
+        document.addEventListener('keydown', (e) => {
+            if (!modal.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
+        });
+
+        // Soporte Táctil (Swipe)
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        modal.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        modal.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            const threshold = 50;
+            if (touchEndX < touchStartX - threshold) showNext();
+            if (touchEndX > touchStartX + threshold) showPrev();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "Luxe Estate",
+  "description": "A high-end architectural real estate platform for luxury properties.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
