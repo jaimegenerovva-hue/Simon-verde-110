@@ -1,6 +1,6 @@
 {
-  "name": "Luxe Estate",
-  "description": "A high-end architectural real estate platform for luxury properties.",
+  "name": "Chalet en Simón Verde",
+  "description": "Descubre esta vivienda única en una de las zonas más exclusivas del Aljarafe. Espacio, tranquilidad y conexión con Sevilla.",
   "requestFramePermissions": [
     "geolocation"
   ]
