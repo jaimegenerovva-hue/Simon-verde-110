@@ -60,7 +60,7 @@ export const VILLA_DE_CLASE_ALTA: Property = {
   ],
   agent: {
     name: "Magdalena",
-    role: "Agente inmobiliario",
+    role: "Gerente de ComprarCasa Suhogar",
     image: "https://i.ibb.co/3yvvt76w/imagen.jpg",
   },
   proximity: [
